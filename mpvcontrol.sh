@@ -1,8 +1,17 @@
 #!/bin/sh
 
-mpvcmd="mpv $HOME/music --shuffle"
+MPVCMD="mpv $HOME/music --shuffle"
 
-sock=/tmp/mpvSockets/$(ls /tmp/mpvSockets -1v | tail -n 1)
+SOCK=/tmp/mpvSockets/$(ls /tmp/mpvSockets -1v | tail -n 1)
+
+
+get_file () {
+    echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data"
+}
+
+is_paused () {
+    echo '{ "command": ["get_property", "pause"] }' | socat - "$SOCK" | jq -r ".data"
+}
 
 toggle_all () {
     for i in $(ls /tmp/mpvSockets/*); do
@@ -12,19 +21,20 @@ toggle_all () {
 
 toggle () {
     local count=$(ps -C mpv h -o pid | wc -l)
+
     if [ $count -eq 0 ]; then
-        $($mpvcmd)
+        $($MPVCMD);
     else
-        echo '{ "command": ["cycle", "pause"] }' | socat - "$sock";
+        echo '{ "command": ["cycle", "pause"] }' | socat - "$SOCK";
     fi
 }
 
 next () {
-    echo 'playlist-next' | socat - "$sock";
+    echo 'playlist-next' | socat - "$SOCK";
 }
 
 prev () {
-    echo 'playlist-prev' | socat - "$sock";
+    echo 'playlist-prev' | socat - "$SOCK";
 }
 
 case $1 in
@@ -42,5 +52,13 @@ case $1 in
 
     prev)
         prev
+        ;;
+
+    is_paused)
+        is_paused
+        ;;
+
+    get_file)
+        get_file
         ;;
 esac
