@@ -17,4 +17,4 @@ If there are no mpv processes running, issuing the toggle command will run the c
 
 ## Dependencies
 
-This script depends on https://github.com/wis/mpvSockets for maintaining separate sockets for each instance, and the socat utility for performing socket communications.
+This script depends on https://github.com/wis/mpvSockets for maintaining separate sockets for each instance, the socat utility for performing socket communications, and the jq utility for parsing JSON.
