@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MPVCMD="mpv $HOME/music --shuffle"
+MPVCMD="mpv $HOME/music --shuffle --loop-playlist"
 
 SOCK=/tmp/mpvSockets/$(ls /tmp/mpvSockets -1v | tail -n 1)
 
