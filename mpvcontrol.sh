@@ -6,7 +6,8 @@ SOCK=/tmp/mpvSockets/$(ls /tmp/mpvSockets -1v | tail -n 1)
 
 
 get_file () {
-    echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data"
+    MPVFILEPATH=$(echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data")
+    basename "$MPVFILEPATH"
 }
 
 is_paused () {
@@ -20,9 +21,9 @@ toggle_all () {
 }
 
 toggle () {
-    local count=$(ps -C mpv h -o pid | wc -l)
+    MPVCOUNT=$(ps -C mpv h -o pid | wc -l)
 
-    if [ $count -eq 0 ]; then
+    if [ $MPVCOUNT -eq 0 ]; then
         $($MPVCMD);
     else
         echo '{ "command": ["cycle", "pause"] }' | socat - "$SOCK";
