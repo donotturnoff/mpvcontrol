@@ -15,8 +15,13 @@ play () {
     if [ "$#" -eq 0 ] ; then
         echo '{ "command": ["set_property", "pause", false] }' | socat - "$SOCK"
     else
+        pause
         find $MUSICPATH/ -iname "*$1*" -exec mpv {} +
     fi
+}
+
+pause () {
+    echo '{ "command": ["set_property", "pause", true] }' | socat - "$SOCK"
 }
 
 get_file () {
@@ -81,6 +86,10 @@ case $1 in
 
     play)
         play $2
+        ;;
+
+    pause)
+        pause
         ;;
 
     stop)
