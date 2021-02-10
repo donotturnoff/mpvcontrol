@@ -1,9 +1,23 @@
 #!/bin/sh
 
 MPVCMD="mpv $HOME/music --shuffle --loop-playlist"
+MUSICPATH="$HOME/music"
 
-SOCK=/tmp/mpvSockets/$(ls /tmp/mpvSockets -1v | tail -n 1)
+PID=$(ls /tmp/mpvSockets -1v | tail -n 1)
+SOCK=/tmp/mpvSockets/$PID
 
+stop () {
+    kill $PID
+    rm $SOCK
+}
+
+play () {
+    if [ "$#" -eq 0 ] ; then
+        echo '{ "command": ["set_property", "pause", false] }' | socat - "$SOCK"
+    else
+        find $MUSICPATH/ -iname "*$1*" -exec mpv {} +
+    fi
+}
 
 get_file () {
     MPVFILEPATH=$(echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data")
@@ -22,6 +36,8 @@ toggle_all () {
 
 toggle () {
     MPVCOUNT=$(ps -C mpv h -o pid | wc -l)
+
+    echo $MPVCOUNT
 
     if [ $MPVCOUNT -eq 0 ]; then
         $($MPVCMD);
@@ -61,5 +77,13 @@ case $1 in
 
     get_file)
         get_file
+        ;;
+
+    play)
+        play $2
+        ;;
+
+    stop)
+        stop
         ;;
 esac
