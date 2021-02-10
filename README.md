@@ -1,8 +1,8 @@
-# mpvcontrol
+# mpvctl
 
 A script for controlling mpv.
 
-Usage: `mpvcontrol command`
+Usage: `mpvctl command`
 
 `command` is one of:
 
