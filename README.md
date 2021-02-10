@@ -12,7 +12,8 @@ Usage: `mpvctl command`
  - `next`: go to the next item in the playlist of the most recently-opened instance of mpv
  - `get_file`: echo the basename of the file being played by the most-recently opened instance of mpv
  - `is_paused`: echo true if the most-recently opened instance of mpv is paused, false otherwise
- - `play [pattern]`: play the most-recently opened instance of mpv if `pattern` is not specified, else play files in `$MUSICDIR` matching `pattern`
+ - `play [pattern]`: play the most-recently opened instance of mpv if `pattern` is not specified, else play files in `$MUSICDIR` matching `pattern` and pause the most-recently opened instance of mpv
+ - `pause`: pause the most-recently opened instance of mpv
  - `stop`: kill the most recently-opened instance of mpv and remove its socket
 
 ## Dependencies
