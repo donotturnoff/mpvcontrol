@@ -16,7 +16,8 @@ play () {
         echo '{ "command": ["set_property", "pause", false] }' | socat - "$SOCK"
     else
         pause
-        find $MUSICPATH/ -iname "*$1*" -exec mpv {} +
+        SEARCHTERM="$@"
+        find $MUSICPATH/ -iname "*$SEARCHTERM*" -exec mpv {} +
     fi
 }
 
@@ -85,7 +86,8 @@ case $1 in
         ;;
 
     play)
-        play $2
+        shift
+        play $@
         ;;
 
     pause)
