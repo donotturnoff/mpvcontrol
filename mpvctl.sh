@@ -3,7 +3,7 @@
 MPVCMD="mpv $HOME/music --shuffle --loop-playlist"
 MUSICPATH="$HOME/music"
 
-PID=$(ls /tmp/mpvSockets -1v | tail -n 1)
+PID=$(ls /tmp/mpvSockets -1tr | tail -n 1)
 SOCK=/tmp/mpvSockets/$PID
 
 stop () {
