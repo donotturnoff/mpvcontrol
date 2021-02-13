@@ -26,8 +26,10 @@ pause () {
 }
 
 get_file () {
-    MPVFILEPATH=$(echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data")
-    basename "$MPVFILEPATH"
+    if [ "$PID" != "" ] ; then
+        MPVFILEPATH=$(echo '{ "command": ["get_property", "path"] }' | socat - "$SOCK" | jq -r ".data")
+        basename "$MPVFILEPATH"
+    fi
 }
 
 is_paused () {
